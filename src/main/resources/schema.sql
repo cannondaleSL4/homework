@@ -53,7 +53,8 @@ CREATE TABLE IF NOT EXISTS projectMember (
   address VARCHAR(100) NOT NULL UNIQUE,
   birthday TIMESTAMP NOT NULL DEFAULT (NOW()),
   login VARCHAR(10) NOT NULL UNIQUE,
-  password VARCHAR(10) NOT NULL
+  password VARCHAR(10) NOT NULL,
+  userRole_id INT NOT NULL, FOREIGN KEY (userRole_id) REFERENCES userRole(id)
 );
 
 CREATE TABLE IF NOT EXISTS projectMemberRole (
@@ -132,7 +133,8 @@ CREATE TABLE IF NOT EXISTS taskHistory (
   name VARCHAR(45) NOT NULL UNIQUE,
   estimation VARCHAR(45) NOT NULL UNIQUE,
   task_id INT NOT NULL, FOREIGN KEY (task_id) REFERENCES taskType(id),
-  comment_id INT NOT NULL, FOREIGN KEY (comment_id) REFERENCES comment(id)
+  comment_id INT NOT NULL, FOREIGN KEY (comment_id) REFERENCES comment(id),
+  status_id INT NOT NULL, FOREIGN KEY (status_id) REFERENCES status(id)
 );
 
 CREATE TABLE IF NOT EXISTS sprintTask (
