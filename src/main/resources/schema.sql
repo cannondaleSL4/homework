@@ -1,16 +1,16 @@
 CREATE TABLE IF NOT EXISTS customer (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   phoneNumber VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS team (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS project (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   bugjet NUMERIC (18,2) NOT NULL,
   deadline TIMESTAMP NOT NULL DEFAULT (NOW()),
@@ -18,35 +18,35 @@ CREATE TABLE IF NOT EXISTS project (
 );
 
 CREATE TABLE IF NOT EXISTS projectTeam (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   team_id INT NOT NULL, FOREIGN KEY (team_id) REFERENCES team(id),
   project_id INT NOT NULL, FOREIGN KEY (project_id) REFERENCES project(id)
 );
 
 CREATE TABLE IF NOT EXISTS rule (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS projectRule (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS ruleOfRole (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   rule_id INT NOT NULL, FOREIGN KEY (rule_id) REFERENCES rule(id),
   projectRule_id INT NOT NULL, FOREIGN KEY (projectRule_id) REFERENCES projectRule(id)
 );
 
 CREATE TABLE IF NOT EXISTS userRole (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS projectMember (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   surname VARCHAR(45) NOT NULL UNIQUE,
   patronymic VARCHAR(100) NOT NULL UNIQUE,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS projectMember (
 );
 
 CREATE TABLE IF NOT EXISTS projectMemberRole (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   projectRule_id INT NOT NULL, FOREIGN KEY (projectRule_id) REFERENCES projectRule(id),
   team_id INT NOT NULL, FOREIGN KEY (team_id) REFERENCES team(id),
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS projectMemberRole (
 );
 
 CREATE TABLE IF NOT EXISTS sprint (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   startDate TIMESTAMP NOT NULL DEFAULT (NOW()),
   finishDate TIMESTAMP NOT NULL DEFAULT (NOW()),
@@ -73,24 +73,24 @@ CREATE TABLE IF NOT EXISTS sprint (
 );
 
 CREATE TABLE IF NOT EXISTS priority (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS prioritySet (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   project_id INT NOT NULL, FOREIGN KEY (project_id) REFERENCES project(id),
   priority_id INT NOT NULL, FOREIGN KEY (priority_id) REFERENCES priority(id)
 );
 
 CREATE TABLE IF NOT EXISTS documentType (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS requirement (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   ddate TIMESTAMP NOT NULL DEFAULT (NOW()),
   project_id INT NOT NULL, FOREIGN KEY (project_id) REFERENCES project(id),
@@ -99,22 +99,22 @@ CREATE TABLE IF NOT EXISTS requirement (
 );
 
 CREATE TABLE IF NOT EXISTS status (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS taskType (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS entity (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS file (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   content bytea NOT NULL,
   description VARCHAR(45) NOT NULL UNIQUE,
@@ -122,13 +122,13 @@ CREATE TABLE IF NOT EXISTS file (
 );
 
 CREATE TABLE IF NOT EXISTS comment (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   text VARCHAR(45) NOT NULL UNIQUE,
   ddate TIMESTAMP NOT NULL DEFAULT (NOW())
 );
 
 CREATE TABLE IF NOT EXISTS taskHistory (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   estimation VARCHAR(45) NOT NULL UNIQUE,
   task_id INT NOT NULL, FOREIGN KEY (task_id) REFERENCES taskType(id),
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS taskHistory (
 );
 
 CREATE TABLE IF NOT EXISTS sprintTask (
-  id serial PRIMARY KEY,
+  id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   description VARCHAR(45) NOT NULL UNIQUE,
   user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES projectMember(id),
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS sprintTask (
 
 
 --CREATE TABLE IF NOT EXISTS pharmacist (
---  id_pharmacist serial PRIMARY KEY,
+--  id_pharmacist integer not null auto_increment,
 --  name VARCHAR(45)  NOT NULL UNIQUE,
 --  password VARCHAR(45)  NOT NULL,
 --  user_group VARCHAR(45) NOT NULL,
@@ -164,12 +164,12 @@ CREATE TABLE IF NOT EXISTS sprintTask (
 --);
 --
 --CREATE TABLE IF NOT EXISTS drug (
---  id_drug serial PRIMARY KEY,
+--  id_drug integer not null auto_increment,
 --  drug_name VARCHAR(45) NOT NULL UNIQUE
 --);
 --
 --CREATE TABLE IF NOT EXISTS drug_store (
---  id_drug_store serial PRIMARY KEY,
+--  id_drug_store integer not null auto_increment,
 --  id_drug INT NOT NULL, FOREIGN KEY (id_drug) REFERENCES drug(id_drug),
 --  price numeric (18,2) NOT NULL,
 --  amount int  NOT NULL,
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS sprintTask (
 --);
 --
 --CREATE TABLE IF NOT EXISTS client (
---  id_client serial PRIMARY KEY,
+--  id_client integer not null auto_increment,
 --  name VARCHAR(45) NOT NULL UNIQUE,
 --  password VARCHAR(45) NOT NULL,
 --  user_group VARCHAR(45) NOT NULL,
@@ -186,14 +186,14 @@ CREATE TABLE IF NOT EXISTS sprintTask (
 --);
 --
 --CREATE TABLE IF NOT EXISTS order_t (
---  id_order serial PRIMARY KEY,
+--  id_order integer not null auto_increment,
 --  id_client INT NOT NULL, FOREIGN KEY (id_client) REFERENCES client(id_client),
 --  id_pharmacist INT NOT NULL, FOREIGN KEY (id_pharmacist) REFERENCES pharmacist(id_pharmacist),
 --  date TIMESTAMP NOT NULL DEFAULT (NOW())
 --);
 --
 --CREATE TABLE  IF NOT EXISTS order_items (
---  id_items serial PRIMARY KEY,
+--  id_items integer not null auto_increment,
 --  id_order INT NOT NULL, FOREIGN KEY (id_order) REFERENCES order_t (id_order),
 --  id_drug INT NOT NULL, FOREIGN KEY (id_drug) REFERENCES drug (id_drug),
 --  price numeric (18,2) NOT NULL,
