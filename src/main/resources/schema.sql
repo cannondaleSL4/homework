@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS customer (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
-  phoneNumber VARCHAR(45) NOT NULL UNIQUE
+  phone_number VARCHAR(45) NOT NULL UNIQUE,
+  address VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS team (
@@ -28,24 +29,23 @@ CREATE TABLE IF NOT EXISTS rule (
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS projectRule (
+CREATE TABLE IF NOT EXISTS project_role (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS ruleOfRole (
-  id integer not null auto_increment,
-  name VARCHAR(45) NOT NULL UNIQUE,
+CREATE TABLE IF NOT EXISTS rule_of_role (
   rule_id INT NOT NULL, FOREIGN KEY (rule_id) REFERENCES rule(id),
-  projectRule_id INT NOT NULL, FOREIGN KEY (projectRule_id) REFERENCES projectRule(id)
+  project_rule_id INT NOT NULL, FOREIGN KEY (project_rule_id) REFERENCES project_role(id),
+  PRIMARY KEY (rule_id, project_rule_id)
 );
 
-CREATE TABLE IF NOT EXISTS userRole (
+CREATE TABLE IF NOT EXISTS user_role (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS projectMember (
+CREATE TABLE IF NOT EXISTS project_member (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   surname VARCHAR(45) NOT NULL UNIQUE,
@@ -54,15 +54,15 @@ CREATE TABLE IF NOT EXISTS projectMember (
   birthday TIMESTAMP NOT NULL DEFAULT (NOW()),
   login VARCHAR(10) NOT NULL UNIQUE,
   password VARCHAR(10) NOT NULL,
-  userRole_id INT NOT NULL, FOREIGN KEY (userRole_id) REFERENCES userRole(id)
+  user_role_id INT NOT NULL, FOREIGN KEY (user_role_id) REFERENCES user_role(id)
 );
 
-CREATE TABLE IF NOT EXISTS projectMemberRole (
+CREATE TABLE IF NOT EXISTS project_memberRole (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
-  projectRule_id INT NOT NULL, FOREIGN KEY (projectRule_id) REFERENCES projectRule(id),
+  project_role_id INT NOT NULL, FOREIGN KEY (project_role_id) REFERENCES project_role(id),
   team_id INT NOT NULL, FOREIGN KEY (team_id) REFERENCES team(id),
-  user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES projectMember(id)
+  user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES project_member(id)
 );
 
 CREATE TABLE IF NOT EXISTS sprint (
@@ -78,14 +78,14 @@ CREATE TABLE IF NOT EXISTS priority (
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS prioritySet (
+CREATE TABLE IF NOT EXISTS priority_set (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   project_id INT NOT NULL, FOREIGN KEY (project_id) REFERENCES project(id),
   priority_id INT NOT NULL, FOREIGN KEY (priority_id) REFERENCES priority(id)
 );
 
-CREATE TABLE IF NOT EXISTS documentType (
+CREATE TABLE IF NOT EXISTS document_type (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS requirement (
   name VARCHAR(45) NOT NULL UNIQUE,
   ddate TIMESTAMP NOT NULL DEFAULT (NOW()),
   project_id INT NOT NULL, FOREIGN KEY (project_id) REFERENCES project(id),
-  user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES projectMember(id),
-  type_id INT NOT NULL, FOREIGN KEY (type_id) REFERENCES documentType(id)
+  user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES project_member(id),
+  type_id INT NOT NULL, FOREIGN KEY (type_id) REFERENCES document_type(id)
 );
 
 CREATE TABLE IF NOT EXISTS status (
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS status (
   name VARCHAR(45) NOT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS taskType (
+CREATE TABLE IF NOT EXISTS task_type (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE
 );
@@ -128,11 +128,11 @@ CREATE TABLE IF NOT EXISTS comment (
   ddate TIMESTAMP NOT NULL DEFAULT (NOW())
 );
 
-CREATE TABLE IF NOT EXISTS taskHistory (
+CREATE TABLE IF NOT EXISTS task_history (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   estimation VARCHAR(45) NOT NULL UNIQUE,
-  task_id INT NOT NULL, FOREIGN KEY (task_id) REFERENCES taskType(id),
+  task_id INT NOT NULL, FOREIGN KEY (task_id) REFERENCES task_type(id),
   comment_id INT NOT NULL, FOREIGN KEY (comment_id) REFERENCES comment(id),
   status_id INT NOT NULL, FOREIGN KEY (status_id) REFERENCES status(id)
 );
@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS sprintTask (
   id integer not null auto_increment,
   name VARCHAR(45) NOT NULL UNIQUE,
   description VARCHAR(45) NOT NULL UNIQUE,
-  user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES projectMember(id),
+  user_id INT NOT NULL, FOREIGN KEY (user_id) REFERENCES project_member(id),
   priority_id INT NOT NULL, FOREIGN KEY (priority_id) REFERENCES priority(id)
 );
 
